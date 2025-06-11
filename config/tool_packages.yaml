@@ -143,7 +143,7 @@ full:
   - update_catalog_category
   - move_catalog_items
   # Catalog (Optimization)
-  - get_optimization_recommendations
+  #- get_optimization_recommendations
   # Catalog (Variables)
   - create_catalog_item_variable
   - list_catalog_item_variables

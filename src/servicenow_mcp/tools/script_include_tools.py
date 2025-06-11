@@ -121,7 +121,7 @@ def list_script_includes(
             url,
             params=query_params,
             headers=headers,
-            timeout=30,
+            timeout=60,
         )
         response.raise_for_status()
         
@@ -205,7 +205,7 @@ def get_script_include(
             url,
             params=query_params,
             headers=headers,
-            timeout=30,
+            timeout=60,
         )
         response.raise_for_status()
         
@@ -300,7 +300,7 @@ def create_script_include(
             url,
             json=body,
             headers=headers,
-            timeout=30,
+            timeout=60,
         )
         response.raise_for_status()
         
@@ -399,7 +399,7 @@ def update_script_include(
             url,
             json=body,
             headers=headers,
-            timeout=30,
+            timeout=60,
         )
         response.raise_for_status()
         
@@ -468,7 +468,7 @@ def delete_script_include(
         response = requests.delete(
             url,
             headers=headers,
-            timeout=30,
+            timeout=60,
         )
         response.raise_for_status()
         
