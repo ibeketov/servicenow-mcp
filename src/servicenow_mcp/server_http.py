@@ -6,22 +6,17 @@ using Streamable HTTP transport.
 """
 
 import argparse
-<<<<<<< HEAD
 import contextlib
 
 # It's good practice to have a logger if we're managing lifecycles
 import logging
 import os
 from collections.abc import AsyncIterator
-=======
-import os
->>>>>>> bf5e7fc (Implement ServiceNow MCP Server using Streamable HTTP with Starlette and Uvicorn)
 from typing import Dict, Union
 
 import uvicorn
 from dotenv import load_dotenv
 from mcp.server import Server
-<<<<<<< HEAD
 from mcp.server.streamable_http_manager import StreamableHTTPSessionManager
 from starlette.applications import Starlette
 
@@ -63,44 +58,13 @@ def create_starlette_app(mcp_server: Server, *, debug: bool = False) -> Starlett
                 yield
             finally:
                 logger.info("Application shutting down StreamableHTTPSessionManager...")
-=======
-
-# from mcp.server.fastmcp import FastMCP
-from mcp.server.streamable_http import StreamableHttpTransport  # Updated import
-from starlette.applications import Starlette
-from starlette.requests import Request
-from starlette.routing import Route  # Mount is no longer needed
-
-from servicenow_mcp.server import ServiceNowMCP
-from servicenow_mcp.utils.config import AuthConfig, AuthType, BasicAuthConfig, ServerConfig
-
-
-def create_starlette_app(mcp_server: Server, *, debug: bool = False) -> Starlette:
-    """Create a Starlette application for the mcp server with Streamable HTTP."""
-    http_transport = StreamableHttpTransport()
-
-    async def handle_http(request: Request) -> None:
-        """Handles incoming HTTP requests and forwards them to the MCP server."""
-        await http_transport.handle_request(
-            request.scope,
-            request.receive,
-            request._send,  # noqa: SLF001
-            mcp_server,
-            mcp_server.create_initialization_options(),
-        )
->>>>>>> bf5e7fc (Implement ServiceNow MCP Server using Streamable HTTP with Starlette and Uvicorn)
 
     return Starlette(
         debug=debug,
         routes=[
-<<<<<<< HEAD
             Mount("/mcp", app=handle_streamable_http), # Route from example
         ],
         lifespan=lifespan,
-=======
-            Route("/", endpoint=handle_http),  # Typically MCP over HTTP uses the root path
-        ],
->>>>>>> bf5e7fc (Implement ServiceNow MCP Server using Streamable HTTP with Starlette and Uvicorn)
     )
 
 
@@ -120,7 +84,6 @@ class ServiceNowHttpMCP(ServiceNowMCP):
             config: Server configuration, either as a dictionary or ServerConfig object.
         """
         super().__init__(config)
-<<<<<<< HEAD
         # Basic logging configuration for the module
         logging.basicConfig(
             level=logging.INFO, 
@@ -128,10 +91,6 @@ class ServiceNowHttpMCP(ServiceNowMCP):
         )
 
     def start(self, host: str = "127.0.0.1", port: int = 8080):
-=======
-
-    def start(self, host: str = "0.0.0.0", port: int = 8080):
->>>>>>> bf5e7fc (Implement ServiceNow MCP Server using Streamable HTTP with Starlette and Uvicorn)
         """
         Start the MCP server with Streamable HTTP transport using Starlette and Uvicorn.
 
@@ -140,17 +99,11 @@ class ServiceNowHttpMCP(ServiceNowMCP):
             port: Port to listen on.
         """
         # Create Starlette app with Streamable HTTP transport
-<<<<<<< HEAD
         # self.mcp_server is the actual mcp.server.Server instance from ServiceNowMCP base
         starlette_app = create_starlette_app(self.mcp_server, debug=True)
 
         # Run using uvicorn
         logger.info(f"Starting Uvicorn server on {host}:{port}")
-=======
-        starlette_app = create_starlette_app(self.mcp_server, debug=True)
-
-        # Run using uvicorn
->>>>>>> bf5e7fc (Implement ServiceNow MCP Server using Streamable HTTP with Starlette and Uvicorn)
         uvicorn.run(starlette_app, host=host, port=port)
 
 
@@ -205,7 +158,6 @@ def main():
     parser = argparse.ArgumentParser(
         description="Run ServiceNow MCP server with Streamable HTTP transport."
     )
-<<<<<<< HEAD
     parser.add_argument("--host", default="127.0.0.1", help="Host to bind to")
     parser.add_argument("--port", type=int, default=8080, help="Port to listen on")
     parser.add_argument(
@@ -222,12 +174,6 @@ def main():
     )
 
     logger.info(f"Creating ServiceNowHttpMCP with instance: {os.getenv('SERVICENOW_INSTANCE_URL')}")
-=======
-    parser.add_argument("--host", default="0.0.0.0", help="Host to bind to")
-    parser.add_argument("--port", type=int, default=8080, help="Port to listen on")
-    args = parser.parse_args()
-
->>>>>>> bf5e7fc (Implement ServiceNow MCP Server using Streamable HTTP with Starlette and Uvicorn)
     server = create_servicenow_mcp(
         instance_url=os.getenv("SERVICENOW_INSTANCE_URL"),
         username=os.getenv("SERVICENOW_USERNAME"),
